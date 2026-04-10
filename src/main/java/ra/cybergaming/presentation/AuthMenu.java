@@ -17,15 +17,15 @@ public class AuthMenu {
 
     public void showMenu() {
         boolean isRunning = true;
-        
+
         while (isRunning) {
-            System.out.println("\n======================================================================");
-            System.out.println("|                      XÁC THỰC NGƯỜI DÙNG                          |");
-            System.out.println("======================================================================");
-            System.out.println("  1. Đăng ký");
-            System.out.println("  2. Đăng nhập");
-            System.out.println("  0. Thoát");
-            System.out.println("======================================================================");
+            System.out.println("\n+======================================+");
+            System.out.printf("| %-36s |\n", "XÁC THỰC NGƯỜI DÙNG");
+            System.out.println("+======================================+");
+            System.out.printf("| %-36s |\n", "1. Đăng ký");
+            System.out.printf("| %-36s |\n", "2. Đăng nhập");
+            System.out.printf("| %-36s |\n", "0. Thoát");
+            System.out.println("+======================================+");
             System.out.print("Chọn: ");
 
             try {
@@ -33,9 +33,9 @@ public class AuthMenu {
                     System.out.println("Không có input từ stdin. Thoát...");
                     break;
                 }
-                
+
                 int choice = Integer.parseInt(scanner.nextLine().trim());
-                
+
                 switch (choice) {
                     case 1:
                         authService.register();

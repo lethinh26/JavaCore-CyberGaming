@@ -14,7 +14,7 @@ public class InputHandler {
             String newStr = sc.nextLine().trim();
 
             if (newStr.isEmpty()) {
-                System.out.println("Lỗi: không được nhập rỗng. Vui lòng nhập lại.");
+                System.out.println("Lỗi: Không được nhập rỗng. Vui lòng nhập lại.");
                 continue;
             }
 
@@ -62,7 +62,7 @@ public class InputHandler {
             String input = sc.nextLine().trim();
 
             if (input.isEmpty()) {
-                System.out.println("Lỗi: không được để trống. Vui lòng nhập lại.");
+                System.out.println("Lỗi: Không được để trống. Vui lòng nhập lại.");
                 continue;
             }
 
@@ -85,7 +85,7 @@ public class InputHandler {
             String email = sc.nextLine().trim();
 
             if (email.isEmpty()) {
-                System.out.println("Lỗi: không được để trống. Vui lòng nhập lại.");
+                System.out.println("Lỗi: Không được để trống. Vui lòng nhập lại.");
                 continue;
             }
 
@@ -104,7 +104,7 @@ public class InputHandler {
             String pass = sc.nextLine().trim();
 
             if (pass.isEmpty()) {
-                System.out.println("Lỗi: không được để trống. Vui lòng nhập lại.");
+                System.out.println("Lỗi: Không được để trống. Vui lòng nhập lại.");
                 continue;
             }
 
@@ -123,7 +123,7 @@ public class InputHandler {
             String username = sc.nextLine().trim();
 
             if (username.isEmpty()) {
-                System.out.println("Lỗi: không được để trống. Vui lòng nhập lại.");
+                System.out.println("Lỗi: Không được để trống. Vui lòng nhập lại.");
                 continue;
             }
 
@@ -147,7 +147,7 @@ public class InputHandler {
             String phone = sc.nextLine().trim();
 
             if (phone.isEmpty()) {
-                System.out.println("Lỗi: không được để trống. Vui lòng nhập lại.");
+                System.out.println("Lỗi: Không được để trống. Vui lòng nhập lại.");
                 continue;
             }
 

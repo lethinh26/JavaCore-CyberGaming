@@ -6,6 +6,7 @@ import ra.cybergaming.presentation.AuthMenu;
 import ra.cybergaming.presentation.CustomerMenu;
 import ra.cybergaming.presentation.StaffMenu;
 import ra.cybergaming.service.auth.SessionManager;
+import ra.cybergaming.util.DBConnector;
 
 import java.util.Scanner;
 
@@ -13,6 +14,8 @@ public class Main {
     public static Scanner sc = new Scanner(System.in);
     
     public static void main(String[] args) {
+        if (!DBConnector.checkDB()) return;
+
         try {
             System.out.println("========================================");
             System.out.println("   CYBER GAMING - HỆ THỐNG QUẢN LÝ   ");

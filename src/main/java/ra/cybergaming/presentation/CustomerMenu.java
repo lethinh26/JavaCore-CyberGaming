@@ -15,22 +15,22 @@ public class CustomerMenu {
 
     public void showMenu() {
         boolean isRunning = true;
-        
+
         while (isRunning) {
-            System.out.println("\n======================================================================");
-            System.out.println("|                   MENU KHÁCH HÀNG - CUSTOMER                      |");
-            System.out.println("======================================================================");
-            System.out.println("  1. Xem thông tin tài khoản");
-            System.out.println("  2. Đặt trước máy trạm theo khu vực");
-            System.out.println("  3. Đặt đồ ăn/thức uống");
-            System.out.println("  4. Xem lịch sử giao dịch");
-            System.out.println("  0. Đăng xuất");
-            System.out.println("======================================================================");
+            System.out.println("\n+======================================+");
+            System.out.printf("| %-36s |\n", "MENU KHÁCH HÀNG");
+            System.out.println("+======================================+");
+            System.out.printf("| %-36s |\n", "1. Xem thông tin tài khoản");
+            System.out.printf("| %-36s |\n", "2. Đặt trước máy trạm");
+            System.out.printf("| %-36s |\n", "3. Đặt đồ ăn/thức uống");
+            System.out.printf("| %-36s |\n", "4. Xem lịch sử giao dịch");
+            System.out.printf("| %-36s |\n", "0. Đăng xuất");
+            System.out.println("+======================================+");
             System.out.print("Chọn: ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine().trim());
-                
+
                 switch (choice) {
                     case 1:
                         customerService.showInfo();
@@ -59,29 +59,29 @@ public class CustomerMenu {
 
     public void workstationMenu() {
         boolean isRunning = true;
-        
+
         while (isRunning) {
-            System.out.println("\n======================================================================");
-            System.out.println("|                   ĐẶT TRƯỚC MÁY TRẠM                             |");
-            System.out.println("======================================================================");
-            System.out.println("  1. Đặt máy trạm");
-            System.out.println("  2. Huỷ đặt máy trạm");
-            System.out.println("  3. Xem danh sách đã đặt");
-            System.out.println("  4. Xem danh sách đã huỷ");
-            System.out.println("  0. Quay lại");
-            System.out.println("======================================================================");
+            System.out.println("\n+======================================+");
+            System.out.printf("| %-38s |\n", "ĐẶT TRƯỚC MÁY TRẠM");
+            System.out.println("+======================================+");
+            System.out.printf("| %-38s |\n", "1. Đặt máy trạm");
+            System.out.printf("| %-38s |\n", "2. Hủy đặt máy trạm");
+            System.out.printf("| %-38s |\n", "3. Xem danh sách đã đặt");
+            System.out.printf("| %-38s |\n", "4. Xem danh sách đã hủy");
+            System.out.printf("| %-38s |\n", "0. Quay lại");
+            System.out.println("+======================================+");
             System.out.print("Chọn: ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine().trim());
-                
+
                 switch (choice) {
                     case 1:
                         System.out.println("Bạn chọn: Đặt máy trạm");
                         customerService.bookWorkstation();
                         break;
                     case 2:
-                        System.out.println("Bạn chọn: Huỷ đặt máy trạm");
+                        System.out.println("Bạn chọn: Hủy đặt máy trạm");
                         customerService.cancelBooking();
                         break;
                     case 3:
@@ -89,7 +89,7 @@ public class CustomerMenu {
                         customerService.viewPendingBookings();
                         break;
                     case 4:
-                        System.out.println("Bạn chọn: Xem danh sách đã huỷ");
+                        System.out.println("Bạn chọn: Xem danh sách đã hủy");
                         customerService.viewCancelledBookings();
                         break;
                     case 0:
@@ -107,29 +107,29 @@ public class CustomerMenu {
 
     public void serviceMenu() {
         boolean isRunning = true;
-        
+
         while (isRunning) {
-            System.out.println("\n======================================================================");
-            System.out.println("|                   ĐẶT ĐỒ ĂN / THỨC UỐNG                         |");
-            System.out.println("======================================================================");
-            System.out.println("  1. Thêm đồ ăn/thức uống vào giỏ");
-            System.out.println("  2. Huỷ đơn hàng");
-            System.out.println("  3. Xem danh sách đơn hàng đang chờ");
-            System.out.println("  4. Xem danh sách đã hủy");
-            System.out.println("  0. Quay lại");
-            System.out.println("======================================================================");
+            System.out.println("\n+======================================+");
+            System.out.printf("| %-38s |\n", "ĐẶT ĐỒ ĂN / THỨC UỐNG");
+            System.out.println("+======================================+");
+            System.out.printf("| %-38s |\n", "1. Thêm đồ ăn/thức uống vào giỏ");
+            System.out.printf("| %-38s |\n", "2. Hủy đơn hàng");
+            System.out.printf("| %-38s |\n", "3. Xem đơn hàng đang chờ");
+            System.out.printf("| %-38s |\n", "4. Xem đơn hàng đã hủy");
+            System.out.printf("| %-38s |\n", "0. Quay lại");
+            System.out.println("+======================================+");
             System.out.print("Chọn: ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine().trim());
-                
+
                 switch (choice) {
                     case 1:
                         System.out.println("Bạn chọn: Đặt đồ ăn/thức uống");
                         customerService.orderFood();
                         break;
                     case 2:
-                        System.out.println("Bạn chọn: Huỷ đơn hàng");
+                        System.out.println("Bạn chọn: Hủy đơn hàng");
                         customerService.cancelOrder();
                         break;
                     case 3:
