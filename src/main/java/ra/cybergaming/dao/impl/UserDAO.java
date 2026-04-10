@@ -1,5 +1,6 @@
 package ra.cybergaming.dao.impl;
 
+import org.mindrot.jbcrypt.BCrypt;
 import ra.cybergaming.dao.IBaseDAO;
 import ra.cybergaming.model.User;
 import ra.cybergaming.model.enums.RoleType;
@@ -20,6 +21,26 @@ public class UserDAO implements IBaseDAO<User> {
             return false;
         }
 
+        if (entity.getPasswordHash() == null || entity.getPasswordHash().isEmpty()) {
+            System.out.println("Lỗi: Mật khẩu không được để trống.");
+            return false;
+        }
+
+        if (entity.getEmail() == null || entity.getEmail().isEmpty()) {
+            System.out.println("Lỗi: Email không được để trống.");
+            return false;
+        }
+
+        if (entity.getFullName() == null || entity.getFullName().isEmpty()) {
+            System.out.println("Lỗi: Họ và tên không được để trống.");
+            return false;
+        }
+
+        if (entity.getPhone() == null || entity.getPhone().isEmpty()) {
+            System.out.println("Lỗi: SĐT không được để trống.");
+            return false;
+        }
+
         if (findByUsername(entity.getUsername()) != null) {
             System.out.println("Lỗi: Username đã tồn tại.");
             return false;
@@ -30,6 +51,8 @@ public class UserDAO implements IBaseDAO<User> {
 
         try (Connection conn = DBConnector.openConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            String passwordHash = BCrypt.hashpw(entity.getPasswordHash(), BCrypt.gensalt());
+            entity.setPasswordHash(passwordHash);
 
             pstmt.setString(1, entity.getUsername());
             pstmt.setString(2, entity.getPasswordHash());
@@ -177,7 +200,7 @@ public class UserDAO implements IBaseDAO<User> {
             return null;
         }
 
-        if (!user.getPasswordHash().equals(passwordHash)) {
+        if (!BCrypt.checkpw(passwordHash, user.getPasswordHash())) {
             System.out.println("Lỗi: Password không chính xác.");
             return null;
         }

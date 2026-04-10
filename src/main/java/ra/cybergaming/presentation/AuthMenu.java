@@ -7,10 +7,12 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class AuthMenu {
-    private Scanner scanner;
+    private final Scanner scanner;
+    private final AuthService authService;
 
     public AuthMenu(Scanner scanner) {
         this.scanner = scanner;
+        authService = AuthService.getInstance();
     }
 
     public void showMenu() {
@@ -36,10 +38,10 @@ public class AuthMenu {
                 
                 switch (choice) {
                     case 1:
-                        AuthService.register();
+                        authService.register();
                         break;
                     case 2:
-                        AuthService.login();
+                        authService.login();
                         if (SessionManager.isLoggedIn()) {
                             System.out.println("Chào mừng " + SessionManager.getCurrentUser().getFullName() + "!");
                             isRunning = false;

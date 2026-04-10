@@ -9,6 +9,7 @@ public class Booking {
     private String bookingCode;
     private int customerId;
     private int workstationId;
+    private Integer staffId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private double totalAmount;
@@ -17,11 +18,12 @@ public class Booking {
     private LocalDateTime updatedAt;
 
 
-    public Booking(int bookingId, String bookingCode, int customerId, int workstationId, LocalDateTime startTime, LocalDateTime endTime, double totalAmount, BookingStatus bookingStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Booking(int bookingId, String bookingCode, int customerId, int workstationId, Integer staffId, LocalDateTime startTime, LocalDateTime endTime, double totalAmount, BookingStatus bookingStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.bookingId = bookingId;
         this.bookingCode = bookingCode;
         this.customerId = customerId;
         this.workstationId = workstationId;
+        this.staffId = staffId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.totalAmount = totalAmount;
@@ -63,6 +65,14 @@ public class Booking {
 
     public void setWorkstationId(int workstationId) {
         this.workstationId = workstationId;
+    }
+
+    public Integer getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Integer staffId) {
+        this.staffId = staffId;
     }
 
     public LocalDateTime getStartTime() {
