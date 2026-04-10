@@ -39,17 +39,16 @@ public class AdminMenu {
                         break;
                     case 4:
                         System.out.println("Bạn chọn: Xem báo cáo tổng quát");
-                        // TODO: Gọi hàm xem báo cáo
                         break;
                     case 0:
                         System.out.println("Đăng xuất...");
                         isRunning = false;
                         break;
                     default:
-                        System.out.println("❌ Lỗi: Vui lòng chọn một option hợp lệ!");
+                        System.out.println("Lỗi: Vui lòng chọn một option hợp lệ!");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("❌ Lỗi: Vui lòng nhập một số hợp lệ!");
+                System.out.println("Lỗi: Vui lòng nhập một số hợp lệ!");
             }
         }
     }
@@ -75,29 +74,25 @@ public class AdminMenu {
                 switch (choice) {
                     case 1:
                         System.out.println("Bạn chọn: Xem danh sách máy trạm");
-                        // TODO: Gọi hàm xem danh sách
                         break;
                     case 2:
                         System.out.println("Bạn chọn: Thêm máy trạm mới");
-                        // TODO: Gọi hàm thêm mới
                         break;
                     case 3:
                         System.out.println("Bạn chọn: Cập nhật máy trạm");
-                        // TODO: Gọi hàm cập nhật
                         break;
                     case 4:
                         System.out.println("Bạn chọn: Xoá máy trạm");
-                        // TODO: Gọi hàm xoá
                         break;
                     case 0:
                         System.out.println("Quay lại menu chính...");
                         isRunning = false;
                         break;
                     default:
-                        System.out.println("❌ Lỗi: Vui lòng chọn một option hợp lệ!");
+                        System.out.println("Lỗi: Vui lòng chọn một option hợp lệ!");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("❌ Lỗi: Vui lòng nhập một số hợp lệ!");
+                System.out.println("Lỗi: Vui lòng nhập một số hợp lệ!");
             }
         }
     }

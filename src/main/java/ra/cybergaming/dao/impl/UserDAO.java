@@ -212,6 +212,16 @@ public class UserDAO implements IBaseDAO<User> {
             return false;
         }
 
+        if (checkEmailExists(newUser.getEmail())) {
+            System.out.println("Lỗi: Email đã tồn tại.");
+            return false;
+        }
+
+        if (checkPhoneExists(newUser.getPhone())) {
+            System.out.println("Lỗi: SĐT đã tồn tại.");
+            return false;
+        }
+
         newUser.setRoleType(RoleType.CUSTOMER);
 
         if (create(newUser)) {

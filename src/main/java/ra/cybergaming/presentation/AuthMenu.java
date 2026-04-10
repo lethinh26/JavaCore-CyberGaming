@@ -1,6 +1,7 @@
 package ra.cybergaming.presentation;
 
 import ra.cybergaming.service.auth.AuthService;
+import ra.cybergaming.service.auth.SessionManager;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -13,7 +14,6 @@ public class AuthMenu {
     }
 
     public void showMenu() {
-        AuthService authService = new AuthService();
         boolean isRunning = true;
         
         while (isRunning) {
@@ -28,7 +28,7 @@ public class AuthMenu {
 
             try {
                 if (!scanner.hasNextLine()) {
-                    System.out.println("❌ Không có input từ stdin. Thoát...");
+                    System.out.println("Không có input từ stdin. Thoát...");
                     break;
                 }
                 
@@ -36,23 +36,27 @@ public class AuthMenu {
                 
                 switch (choice) {
                     case 1:
-                        System.out.println("Bạn chọn: Đăng ký");
                         AuthService.register();
                         break;
                     case 2:
-                        System.out.println("Bạn chọn: Đăng nhập");
+                        AuthService.login();
+                        if (SessionManager.isLoggedIn()) {
+                            System.out.println("Chào mừng " + SessionManager.getCurrentUser().getFullName() + "!");
+                            isRunning = false;
+                        }
                         break;
                     case 0:
                         System.out.println("Thoát chương trình...");
                         isRunning = false;
+                        System.exit(0);
                         break;
                     default:
-                        System.out.println("❌ Lỗi: Vui lòng chọn một option hợp lệ!");
+                        System.out.println("Lỗi: Vui lòng chọn một option hợp lệ!");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("❌ Lỗi: Vui lòng nhập một số hợp lệ!");
+                System.out.println("Lỗi: Vui lòng nhập một số hợp lệ!");
             } catch (NoSuchElementException e) {
-                System.out.println("❌ Lỗi: Không có input. Thoát...");
+                System.out.println("Lỗi: Không có input. Thoát...");
                 break;
             }
         }

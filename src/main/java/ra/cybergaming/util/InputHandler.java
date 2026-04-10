@@ -132,6 +132,11 @@ public class InputHandler {
                 continue;
             }
 
+            if (username.contains(" ")) {
+                System.out.println("Lỗi: Tên tài khoản không được chứa dấu cách. Vui lòng nhập lại.");
+                continue;
+            }
+
             return username;
         }
     }
