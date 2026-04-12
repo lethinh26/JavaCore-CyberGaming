@@ -1,5 +1,6 @@
 package ra.cybergaming.presentation;
 
+import ra.cybergaming.service.auth.SessionManager;
 import ra.cybergaming.service.customer.CustomerService;
 
 import java.util.Scanner;
@@ -46,6 +47,7 @@ public class CustomerMenu {
                         break;
                     case 0:
                         System.out.println("Đăng xuất...");
+                        SessionManager.logout();
                         isRunning = false;
                         break;
                     default:

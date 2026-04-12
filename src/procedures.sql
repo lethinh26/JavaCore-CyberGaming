@@ -1,14 +1,6 @@
--- ============================================================================
--- STORED PROCEDURES FOR BOOKING AND ORDER TRANSACTIONS
--- ============================================================================
+DELIMITER %%
 
-DELIMITER //
-
--- ============================================================================
--- PROCEDURE: CreateBooking
--- Purpose: Tạo đặt máy trạm với transaction
--- ============================================================================
-DROP PROCEDURE IF EXISTS CreateBooking//
+DROP PROCEDURE IF EXISTS CreateBooking%%
 
 CREATE PROCEDURE CreateBooking(
     IN p_customer_id INT,
@@ -33,8 +25,7 @@ proc_label: BEGIN
 
     START TRANSACTION;
 
-    -- Kiểm tra khách hàng tồn tại
-    SELECT COUNT(*) INTO v_customer_exists 
+    SELECT COUNT(*) INTO v_customer_exists
     FROM users WHERE user_id = p_customer_id AND role_id = 3;
     
     IF v_customer_exists = 0 THEN
@@ -45,8 +36,7 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Kiểm tra máy trạm tồn tại
-    SELECT COUNT(*) INTO v_workstation_exists 
+    SELECT COUNT(*) INTO v_workstation_exists
     FROM workstations WHERE workstation_id = p_workstation_id;
     
     IF v_workstation_exists = 0 THEN
@@ -57,8 +47,7 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Kiểm tra máy trạm có sẵn không
-    SELECT COUNT(*) INTO v_workstation_available 
+    SELECT COUNT(*) INTO v_workstation_available
     FROM workstations WHERE workstation_id = p_workstation_id AND status = 'AVAILABLE';
     
     IF v_workstation_available = 0 THEN
@@ -69,7 +58,6 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Kiểm tra thời gian hợp lệ
     IF p_start_time <= NOW() THEN
         ROLLBACK;
         SET p_status = 'INVALID_TIME';
@@ -78,7 +66,6 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Tạo đặt máy
     INSERT INTO bookings (customer_id, workstation_id, start_time, booking_status)
     VALUES (p_customer_id, p_workstation_id, p_start_time, 'PENDING');
 
@@ -88,13 +75,9 @@ proc_label: BEGIN
     SET p_status = 'SUCCESS';
     SET p_message = CONCAT('Đặt máy thành công! Mã đặt: BO', LPAD(p_booking_id, 5, '0'));
 
-END proc_label//
+END proc_label%%
 
--- ============================================================================
--- PROCEDURE: CreateOrder
--- Purpose: Tạo đơn hàng với các món ăn/thức uống
--- ============================================================================
-DROP PROCEDURE IF EXISTS CreateOrder//
+DROP PROCEDURE IF EXISTS CreateOrder%%
 
 CREATE PROCEDURE CreateOrder(
     IN p_booking_id INT,
@@ -120,7 +103,6 @@ proc_label: BEGIN
 
     START TRANSACTION;
 
-    -- Kiểm tra đặt máy tồn tại
     SELECT COUNT(*) INTO v_booking_exists FROM bookings WHERE booking_id = p_booking_id;
     
     IF v_booking_exists = 0 THEN
@@ -131,8 +113,7 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Kiểm tra đặt máy thuộc về khách hàng này
-    SELECT COUNT(*) INTO v_booking_customer 
+    SELECT COUNT(*) INTO v_booking_customer
     FROM bookings WHERE booking_id = p_booking_id AND customer_id = p_customer_id;
     
     IF v_booking_customer = 0 THEN
@@ -143,7 +124,6 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Kiểm tra nhân viên hợp lệ (nếu được cung cấp)
     IF p_staff_id IS NOT NULL THEN
         SELECT COUNT(*) INTO v_staff_exists 
         FROM users WHERE user_id = p_staff_id AND role_id = 2;
@@ -157,7 +137,6 @@ proc_label: BEGIN
         END IF;
     END IF;
 
-    -- Tạo đơn hàng
     INSERT INTO orders (booking_id, customer_id, staff_id, note, order_status, total_amount)
     VALUES (p_booking_id, p_customer_id, p_staff_id, p_note, 'PENDING', 0.00);
 
@@ -167,13 +146,9 @@ proc_label: BEGIN
     SET p_status = 'SUCCESS';
     SET p_message = CONCAT('Tạo đơn hàng thành công! Mã đơn: ', p_order_id);
 
-END proc_label//
+END proc_label%%
 
--- ============================================================================
--- PROCEDURE: AddOrderItem
--- Purpose: Thêm món ăn/thức uống vào đơn hàng và cập nhật tổng tiền
--- ============================================================================
-DROP PROCEDURE IF EXISTS AddOrderItem//
+DROP PROCEDURE IF EXISTS AddOrderItem%%
 
 CREATE PROCEDURE AddOrderItem(
     IN p_order_id INT,
@@ -202,7 +177,6 @@ proc_label: BEGIN
 
     START TRANSACTION;
 
-    -- Kiểm tra đơn hàng tồn tại
     SELECT COUNT(*) INTO v_order_exists FROM orders WHERE order_id = p_order_id;
     
     IF v_order_exists = 0 THEN
@@ -214,7 +188,6 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Lấy giá và kiểm tra dịch vụ tồn tại
     SELECT COUNT(*) INTO v_service_exists FROM services WHERE service_id = p_service_id;
     
     IF v_service_exists = 0 THEN
@@ -226,11 +199,9 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Lấy giá và tồn kho
     SELECT price, stock_quantity INTO v_unit_price, v_stock_quantity
     FROM services WHERE service_id = p_service_id;
 
-    -- Kiểm tra tồn kho
     IF v_stock_quantity < p_quantity THEN
         ROLLBACK;
         SET p_status = 'INSUFFICIENT_STOCK';
@@ -240,7 +211,6 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Kiểm tra số lượng hợp lệ
     IF p_quantity <= 0 THEN
         ROLLBACK;
         SET p_status = 'INVALID_QUANTITY';
@@ -250,30 +220,24 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Tính tiền cho chi tiết đơn hàng
     SET v_line_total = v_unit_price * p_quantity;
 
-    -- Thêm chi tiết đơn hàng
     INSERT INTO order_items (order_id, service_id, quantity, unit_price, line_total)
     VALUES (p_order_id, p_service_id, p_quantity, v_unit_price, v_line_total);
 
     SET p_order_item_id = LAST_INSERT_ID();
 
-    -- Cập nhật tổng tiền của đơn hàng
-    UPDATE orders 
+    UPDATE orders
     SET total_amount = (SELECT SUM(line_total) FROM order_items WHERE order_id = p_order_id)
     WHERE order_id = p_order_id;
 
-    -- Lấy tổng tiền mới
     SELECT total_amount INTO p_new_total FROM orders WHERE order_id = p_order_id;
 
-    -- Giảm tồn kho
-    UPDATE services 
+    UPDATE services
     SET stock_quantity = stock_quantity - p_quantity
     WHERE service_id = p_service_id;
 
-    -- Cập nhật trạng thái nếu hết hàng
-    UPDATE services 
+    UPDATE services
     SET status = 'OUT_OF_STOCK'
     WHERE service_id = p_service_id AND stock_quantity <= 0;
 
@@ -281,13 +245,9 @@ proc_label: BEGIN
     SET p_status = 'SUCCESS';
     SET p_message = 'Thêm món vào đơn hàng thành công';
 
-END proc_label//
+END proc_label%%
 
--- ============================================================================
--- PROCEDURE: CompleteBooking
--- Purpose: Hoàn thành đặt máy và tính tiền
--- ============================================================================
-DROP PROCEDURE IF EXISTS CompleteBooking//
+DROP PROCEDURE IF EXISTS CompleteBooking%%
 
 CREATE PROCEDURE CompleteBooking(
     IN p_booking_id INT,
@@ -315,7 +275,6 @@ proc_label: BEGIN
 
     START TRANSACTION;
 
-    -- Kiểm tra đặt máy tồn tại
     SELECT COUNT(*) INTO v_booking_exists FROM bookings WHERE booking_id = p_booking_id;
     
     IF v_booking_exists = 0 THEN
@@ -326,27 +285,21 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Lấy thông tin đặt máy
-    SELECT customer_id, workstation_id, start_time 
+    SELECT customer_id, workstation_id, start_time
     INTO v_customer_id, v_workstation_id, v_start_time
     FROM bookings WHERE booking_id = p_booking_id;
 
-    -- Lấy giá/giờ từ máy trạm
     SELECT hourly_rate INTO v_hourly_rate
     FROM workstations WHERE workstation_id = v_workstation_id;
 
-    -- Tính thời gian sử dụng (tính bằng giờ, làm tròn lên)
     SET v_duration_hours = CEIL(TIMESTAMPDIFF(MINUTE, v_start_time, NOW()) / 60.0);
 
-    -- Nếu thời gian < 1 giờ thì tính 1 giờ
     IF v_duration_hours < 1 THEN
         SET v_duration_hours = 1;
     END IF;
 
-    -- Tính tiền máy trạm
     SET v_booking_total = v_hourly_rate * v_duration_hours;
 
-    -- Kiểm tra số dư tài khoản
     SELECT balance INTO v_current_balance FROM users WHERE user_id = v_customer_id;
 
     IF v_current_balance < v_booking_total THEN
@@ -357,20 +310,17 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Cập nhật thông tin đặt máy (end_time và total_amount)
-    UPDATE bookings 
+    UPDATE bookings
     SET end_time = NOW(), 
         total_amount = v_booking_total,
         booking_status = 'COMPLETED'
     WHERE booking_id = p_booking_id;
 
-    -- Trừ tiền từ tài khoản khách hàng
-    UPDATE users 
+    UPDATE users
     SET balance = balance - v_booking_total
     WHERE user_id = v_customer_id;
 
-    -- Cập nhật trạng thái máy trạm về AVAILABLE
-    UPDATE workstations 
+    UPDATE workstations
     SET status = 'AVAILABLE'
     WHERE workstation_id = v_workstation_id;
 
@@ -379,13 +329,10 @@ proc_label: BEGIN
     SET p_message = CONCAT('Hoàn thành đặt máy! Thời gian: ', v_duration_hours, ' giờ, Tiền: ', v_booking_total, ' VND');
     SET p_total_amount = v_booking_total;
 
-END proc_label//
+END proc_label%%
 
--- ============================================================================
--- PROCEDURE: CompleteOrder
--- Purpose: Hoàn thành đơn hàng và trừ tiền khách hàng
--- ============================================================================
-DROP PROCEDURE IF EXISTS CompleteOrder//
+
+DROP PROCEDURE IF EXISTS CompleteOrder%%
 
 CREATE PROCEDURE CompleteOrder(
     IN p_order_id INT,
@@ -409,7 +356,6 @@ proc_label: BEGIN
 
     START TRANSACTION;
 
-    -- Kiểm tra đơn hàng tồn tại
     SELECT COUNT(*) INTO v_order_exists FROM orders WHERE order_id = p_order_id;
     
     IF v_order_exists = 0 THEN
@@ -420,14 +366,11 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Lấy thông tin đơn hàng
     SELECT customer_id, total_amount INTO v_customer_id, v_order_total
     FROM orders WHERE order_id = p_order_id;
 
-    -- Lấy số dư hiện tại
     SELECT balance INTO v_current_balance FROM users WHERE user_id = v_customer_id;
 
-    -- Kiểm tra số dư
     IF v_current_balance < v_order_total THEN
         ROLLBACK;
         SET p_status = 'INSUFFICIENT_BALANCE';
@@ -436,12 +379,10 @@ proc_label: BEGIN
         LEAVE proc_label;
     END IF;
 
-    -- Cập nhật trạng thái đơn hàng
     UPDATE orders 
     SET order_status = 'COMPLETED'
     WHERE order_id = p_order_id;
 
-    -- Trừ tiền từ tài khoản
     UPDATE users 
     SET balance = balance - v_order_total
     WHERE user_id = v_customer_id;
@@ -451,6 +392,6 @@ proc_label: BEGIN
     SET p_message = 'Hoàn thành đơn hàng thành công';
     SET p_final_total = v_order_total;
 
-END proc_label//
+END proc_label%%
 
 DELIMITER ;
