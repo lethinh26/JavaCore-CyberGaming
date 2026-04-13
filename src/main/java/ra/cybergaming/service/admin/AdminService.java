@@ -5,22 +5,34 @@ import ra.cybergaming.model.*;
 import ra.cybergaming.model.enums.*;
 import ra.cybergaming.util.InputHandler;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AdminService {
     private WorkstationDAO workstationDAO;
     private ServiceDAO serviceDAO;
     private AreaDAO areaDAO;
     private UserDAO userDAO;
+    private BookingDAO bookingDAO;
+    private OrderDAO orderDAO;
 
     public AdminService() {
         this.workstationDAO = new WorkstationDAO();
         this.serviceDAO = new ServiceDAO();
         this.areaDAO = new AreaDAO();
         this.userDAO = new UserDAO();
+        this.bookingDAO = new BookingDAO();
+        this.orderDAO = new OrderDAO();
     }
 
     public void displayWorkstations() {
@@ -779,5 +791,144 @@ public class AdminService {
         } else {
             System.out.println("Mở khoá tài khoản thất bại. Vui lòng thử lại.");
         }
+    }
+
+    public void exportDailyRevenueToExcel(String dateInput) {
+        LocalDateTime reportDate;
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        try {
+            if (dateInput.isEmpty()) {
+                reportDate = LocalDateTime.now();
+            } else {
+                reportDate = LocalDateTime.parse(dateInput + " 00:00:00", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            }
+        } catch (Exception e) {
+            System.out.println("Định dạng ngày không hợp lệ. Vui lòng nhập lại (dd/MM/yyyy)");
+            return;
+        }
+
+
+        LocalDateTime dayStart = reportDate.withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime dayEnd = dayStart.plusDays(1);
+
+        List<Booking> bookings = bookingDAO.findAll().stream()
+                .filter(b -> Optional.ofNullable(b.getCreatedAt())
+                        .map(createdAt -> createdAt.isAfter(dayStart.minusSeconds(1)) && createdAt.isBefore(dayEnd)
+                                && b.getPaymentStatus() == PaymentStatus.PAID)
+                        .orElse(false))
+                .toList();
+
+        List<Order> orders = orderDAO.findAll().stream()
+                .filter(o -> Optional.ofNullable(o.getCreatedAt())
+                        .map(createdAt -> createdAt.isAfter(dayStart.minusSeconds(1)) && createdAt.isBefore(dayEnd)
+                                && o.getOrderStatus() == OrderStatus.COMPLETED)
+                        .orElse(false))
+                .toList();
+
+        double bookingRevenue = bookings.stream().mapToDouble(Booking::getTotalAmount).sum();
+        double orderRevenue = orders.stream().mapToDouble(Order::getTotalAmount).sum();
+        double totalRevenue = bookingRevenue + orderRevenue;
+
+        System.out.println(bookingRevenue);
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Báo Cáo Doanh Thu");
+
+            int rowNum = 0;
+            Row titleRow = sheet.createRow(rowNum++);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("BÁO CÁO DOANH THU NGÀY " + dateFormat.format(reportDate));
+            titleCell.setCellStyle(createHeaderStyle(workbook));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
+
+            rowNum++;
+            Row summaryRow = sheet.createRow(rowNum++);
+            summaryRow.createCell(0).setCellValue("Tổng doanh thu máy tính:");
+            summaryRow.createCell(1).setCellValue(bookingRevenue);
+
+            Row orderRow = sheet.createRow(rowNum++);
+            orderRow.createCell(0).setCellValue("Tổng doanh thu đồ ăn/thức uống:");
+            orderRow.createCell(1).setCellValue(orderRevenue);
+
+            Row totalRow = sheet.createRow(rowNum++);
+            Cell totalLabelCell = totalRow.createCell(0);
+            totalLabelCell.setCellValue("TỔNG DOANH THU:");
+            totalLabelCell.setCellStyle(createHeaderStyle(workbook));
+            Cell totalValueCell = totalRow.createCell(1);
+            totalValueCell.setCellValue(totalRevenue);
+            totalValueCell.setCellStyle(createHeaderStyle(workbook));
+
+            rowNum += 2;
+            Row bookingHeaderRow = sheet.createRow(rowNum++);
+            String[] bookingHeaders = {"STT", "Mã Booking", "Khách Hàng", "Máy Trạm", "Thời Gian Bắt Đầu", "Thời Gian Kết Thúc", "Doanh Thu"};
+            for (int i = 0; i < bookingHeaders.length; i++) {
+                Cell cell = bookingHeaderRow.createCell(i);
+                cell.setCellValue(bookingHeaders[i]);
+                cell.setCellStyle(createHeaderStyle(workbook));
+            }
+
+            int stt = 1;
+            for (Booking booking : bookings) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(stt++);
+                row.createCell(1).setCellValue(booking.getBookingCode() != null ? booking.getBookingCode() : "");
+                User customer = userDAO.findById(booking.getCustomerId());
+                row.createCell(2).setCellValue(customer != null ? customer.getFullName() : "");
+                Workstation ws = workstationDAO.findById(booking.getWorkstationId());
+                row.createCell(3).setCellValue(ws != null ? ws.getStationName() : "");
+                row.createCell(4).setCellValue(booking.getStartTime() != null ? booking.getStartTime().toString() : "");
+                row.createCell(5).setCellValue(booking.getEndTime() != null ? booking.getEndTime().toString() : "");
+                row.createCell(6).setCellValue(booking.getTotalAmount());
+            }
+
+            if (!orders.isEmpty()) {
+                rowNum += 2;
+                Row orderHeaderRow = sheet.createRow(rowNum++);
+                String[] orderHeaders = {"STT", "Mã Order", "Khách Hàng", "Tổng Tiền", "Thời Gian"};
+                for (int i = 0; i < orderHeaders.length; i++) {
+                    Cell cell = orderHeaderRow.createCell(i);
+                    cell.setCellValue(orderHeaders[i]);
+                    cell.setCellStyle(createHeaderStyle(workbook));
+                }
+
+                stt = 1;
+                for (Order order : orders) {
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(stt++);
+                    row.createCell(1).setCellValue(order.getOrderCode() != null ? order.getOrderCode() : "");
+                    User customer = userDAO.findById(order.getCustomerId());
+                    row.createCell(2).setCellValue(customer != null ? customer.getFullName() : "");
+                    row.createCell(3).setCellValue(order.getTotalAmount());
+                    row.createCell(4).setCellValue(order.getCreatedAt() != null ? order.getCreatedAt().toString() : "");
+                }
+            }
+
+            for (int i = 0; i < 7; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            String filePath = "reports/revenue_" + dateFormat.format(reportDate).replace("/", "-") + "_" + System.currentTimeMillis() + ".xlsx";
+            new File("reports").mkdirs();
+            try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                workbook.write(fos);
+                System.out.println("Xuất báo cáo doanh thu thành công: " + filePath);
+                System.out.println("Doanh thu máy tính: " + String.format("%.2f", bookingRevenue));
+                System.out.println("Doanh thu đồ ăn/thức uống: " + String.format("%.2f", orderRevenue));
+                System.out.println("Tổng doanh thu: " + String.format("%.2f", totalRevenue));
+            }
+        } catch (IOException e) {
+            System.out.println("Lỗi khi xuất báo cáo: " + e.getMessage());
+        }
+    }
+
+    private CellStyle createHeaderStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        style.setFont(font);
+        style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setAlignment(HorizontalAlignment.CENTER);
+        return style;
     }
 }

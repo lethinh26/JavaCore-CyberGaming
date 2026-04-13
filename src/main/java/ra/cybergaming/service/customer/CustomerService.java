@@ -159,11 +159,11 @@ public class CustomerService {
             return;
         }
 
-        System.out.println("\n======================================================================");
-        System.out.println("|                       ĐẶT ĐỒ ĂN/ĐỒ UỐNG                            |");
-        System.out.println("======================================================================");
+        System.out.println("\n====================================================================");
+        System.out.println("|                       ĐẶT ĐỒ ĂN/ĐỒ UỐNG                          |");
+        System.out.println("====================================================================");
         System.out.printf("| %-5s | %-15s | %-20s | %-15s |%n", "STT", "Mã đặt máy", "Máy", "Trạng thái");
-        System.out.println("----------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------");
 
         for (int i = 0; i < activeBookings.size(); i++) {
             Booking booking = activeBookings.get(i);
@@ -173,7 +173,7 @@ public class CustomerService {
                 ws != null ? ws.getStationName() : "N/A",
                 booking.getBookingStatus().toString());
         }
-        System.out.println("======================================================================\n");
+        System.out.println("====================================================================\n");
 
         int bookingChoice = InputHandler.inputInt("Chọn máy để đặt đồ (0 để hủy): ");
 
@@ -200,14 +200,14 @@ public class CustomerService {
         boolean isRunning = true;
         while (isRunning) {
             System.out.println("\n======================================================================");
-            System.out.println("|                       MENU DỊCH VỤ                                |");
+            System.out.println("|                       MENU DỊCH VỤ                                 |");
             System.out.println("======================================================================");
-            System.out.println("| 1. Đồ ăn                                                         |");
-            System.out.println("| 2. Đồ uống                                                       |");
-            System.out.println("| 3. Xem đơn hàng                                                  |");
-            System.out.println("| 4. Xoá món trong đơn hàng                                        |");
-            System.out.println("| 5. Đặt hàng                                                      |");
-            System.out.println("| 0. Thoát                                                         |");
+            System.out.println("| 1. Đồ ăn                                                           |");
+            System.out.println("| 2. Đồ uống                                                         |");
+            System.out.println("| 3. Xem đơn hàng                                                    |");
+            System.out.println("| 4. Xoá món trong đơn hàng                                          |");
+            System.out.println("| 5. Đặt hàng                                                        |");
+            System.out.println("| 0. Thoát                                                           |");
             System.out.println("======================================================================\n");
 
             int menuChoice = InputHandler.inputInt("Chọn: ");
@@ -249,11 +249,11 @@ public class CustomerService {
         }
 
         String categoryName = (category == 1) ? "ĐỒ ĂN" : "ĐỒ UỐNG";
-        System.out.println("\n====================================================================");
-        System.out.printf("| %-62s |%n", "DANH SÁCH DỊCH VỤ");
-        System.out.println("====================================================================");
+        System.out.println("\n============================================================================");
+        System.out.printf("| %-72s |%n", "DANH SÁCH DỊCH VỤ");
+        System.out.println("============================================================================");
         System.out.printf("| %-5s | %-20s | %-15s | %-10s | %-10s |%n", "STT", "Tên dịch vụ", "Giá", "Tồn kho", categoryName);
-        System.out.println("====================================================================");
+        System.out.println("============================================================================");
 
         for (int i = 0; i < services.size(); i++) {
             Service service = services.get(i);
@@ -261,7 +261,7 @@ public class CustomerService {
                 i + 1, service.getServiceName(), service.getPrice(),
                 service.getStock_quantity(), service.getCategory().toString());
         }
-        System.out.println("====================================================================\n");
+        System.out.println("============================================================================\n");
 
         int serviceChoice = InputHandler.inputInt("Chọn món (0 để quay lại): ");
 
@@ -305,11 +305,11 @@ public class CustomerService {
             return;
         }
 
-        System.out.println("\n====================================================================================");
-        System.out.printf("| %-90s |%n", "ĐƠN HÀNG HIỆN TẠI");
-        System.out.println("====================================================================================");
+        System.out.println("\n=================================================================================");
+        System.out.printf("| %-77s |%n", "ĐƠN HÀNG HIỆN TẠI");
+        System.out.println("=================================================================================");
         System.out.printf("| %-5s | %-20s | %-15s | %-10s | %-15s |%n", "STT", "Tên dịch vụ", "Giá", "Số lượng", "Thành tiền");
-        System.out.println("====================================================================================");
+        System.out.println("=================================================================================");
 
         double totalAmount = 0;
         for (int i = 0; i < orderItemList.size(); i++) {
@@ -320,9 +320,9 @@ public class CustomerService {
                 i + 1, serviceName, item.getUnitPrice(), item.getQuantity(), item.getLineTotal());
             totalAmount += item.getLineTotal();
         }
-        System.out.println("====================================================================================");
+        System.out.println("=================================================================================");
         System.out.printf("| %-5s | %-20s | %-15s | %-10s | %-15.2f |%n", "", "", "", "Tổng:", totalAmount);
-        System.out.println("====================================================================================\n");
+        System.out.println("=================================================================================\n");
     }
 
     public void deleteOrderItem() {
@@ -331,11 +331,11 @@ public class CustomerService {
             return;
         }
 
-        System.out.println("\n====================================================================================");
-        System.out.printf("| %-90s |%n", "CHỌN MÓN ĐỂ XOÁ");
-        System.out.println("====================================================================================");
+        System.out.println("\n=================================================================================");
+        System.out.printf("| %-77s |%n", "CHỌN MÓN ĐỂ XOÁ");
+        System.out.println("=================================================================================");
         System.out.printf("| %-5s | %-20s | %-15s | %-10s | %-15s |%n", "STT", "Tên dịch vụ", "Giá", "Số lượng", "Thành tiền");
-        System.out.println("====================================================================================");
+        System.out.println("=================================================================================");
 
         for (int i = 0; i < orderItemList.size(); i++) {
             OrderItem item = orderItemList.get(i);
@@ -344,7 +344,7 @@ public class CustomerService {
             System.out.printf("| %-5d | %-20s | %-15.2f | %-10d | %-15.2f |%n",
                 i + 1, serviceName, item.getUnitPrice(), item.getQuantity(), item.getLineTotal());
         }
-        System.out.println("====================================================================================\n");
+        System.out.println("=================================================================================\n");
 
         int choice = InputHandler.inputInt("Chọn số món cần xoá (0 để hủy): ");
 
@@ -375,11 +375,11 @@ public class CustomerService {
             totalAmount += item.getLineTotal();
         }
 
-        System.out.println("\n====================================================================================");
-        System.out.printf("| %-90s |%n", "ĐƠN HÀNG CUỐI CÙNG");
-        System.out.println("====================================================================================");
+        System.out.println("\n=================================================================================");
+        System.out.printf("| %-77s |%n", "ĐƠN HÀNG CUỐI CÙNG");
+        System.out.println("=================================================================================");
         System.out.printf("| %-5s | %-20s | %-15s | %-10s | %-15s |%n", "STT", "Tên dịch vụ", "Giá", "Số lượng", "Thành tiền");
-        System.out.println("====================================================================================");
+        System.out.println("=================================================================================");
 
         for (int i = 0; i < orderItemList.size(); i++) {
             OrderItem item = orderItemList.get(i);
@@ -388,9 +388,9 @@ public class CustomerService {
             System.out.printf("| %-5d | %-20s | %-15.2f | %-10d | %-15.2f |%n",
                 i + 1, serviceName, item.getUnitPrice(), item.getQuantity(), item.getLineTotal());
         }
-        System.out.println("====================================================================================");
+        System.out.println("=================================================================================");
         System.out.printf("| %-5s | %-20s | %-15s | %-10s | %-15.2f |%n", "", "", "", "Tổng:", totalAmount);
-        System.out.println("====================================================================================\n");
+        System.out.println("=================================================================================\n");
 
         User currentUser = SessionManager.getCurrentUser();
         if (currentUser == null) {
@@ -420,7 +420,7 @@ public class CustomerService {
             currentUser.setBalance(newBalance);
             userDAO.update(currentUser);
             
-            System.out.println("\n✓ Đặt hàng thành công!");
+            System.out.println("\nĐặt hàng thành công!");
             System.out.println("Mã đơn hàng: " + currentOrder.getOrderCode());
             System.out.printf("Tổng tiền: %.2f%n", totalAmount);
             System.out.printf("Số dư còn lại: %.2f%n", newBalance);
@@ -448,8 +448,8 @@ public class CustomerService {
         System.out.println("\n======================================================================");
         System.out.println("|                  LỊCH SỬ GIAO DỊCH CỦA BẠN                         |");
         System.out.println("======================================================================");
-        System.out.printf("| Tên tài khoản: %-60s |%n", currentUser.getUsername());
-        System.out.printf("| Họ và tên    : %-60s |%n", currentUser.getFullName());
+        System.out.printf("| Tên tài khoản: %-51s |%n", currentUser.getUsername());
+        System.out.printf("| Họ và tên    : %-51s |%n", currentUser.getFullName());
         System.out.println("======================================================================\n");
 
         List<Booking> bookings = bookingDAO.findByCustomerId(currentUser.getUserId());
@@ -457,12 +457,12 @@ public class CustomerService {
         if (bookings == null || bookings.isEmpty()) {
             System.out.println("| Không có dữ liệu đặt máy                                          |");
         } else {
-            System.out.println("====================================================================================");
-            System.out.println("|                         ĐẶT MÁY                                    |");
-            System.out.println("====================================================================================");
+            System.out.println("===========================================================================================");
+            System.out.printf("| %-87s |\n", "ĐẶT MÁY");
+            System.out.println("===========================================================================================");
             System.out.printf("| %-15s | %-15s | %-20s | %-15s | %-10s |%n",
                 "Mã đặt", "Máy trạm", "Thời gian bắt đầu", "Tổng tiền", "Trạng thái");
-            System.out.println("====================================================================================");
+            System.out.println("===========================================================================================");
 
             for (Booking booking : bookings) {
                 Workstation ws = workstationDAO.findById(booking.getWorkstationId());
@@ -476,20 +476,23 @@ public class CustomerService {
                     booking.getTotalAmount(),
                     booking.getBookingStatus().toString());
             }
-            System.out.println("====================================================================================\n");
+            System.out.println("===========================================================================================\n");
         }
 
         List<Order> orders = orderDAO.findByCustomerId(currentUser.getUserId());
 
         if (orders == null || orders.isEmpty()) {
-            System.out.println("| Không có dữ liệu đơn hàng                                         |");
+            System.out.println("=========================================================================");
+            System.out.printf("| %-69s |\n", "ĐƠN HÀNG");
+            System.out.println("=========================================================================");
+            System.out.printf("| %-69s |\n", "Không có dữ liệu đơn hàng");
         } else {
-            System.out.println("----------------------------------------------------------------------");
-            System.out.println("|                         ĐƠN HÀNG                                  |");
-            System.out.println("----------------------------------------------------------------------");
+            System.out.println("=========================================================================");
+            System.out.printf("| %-69s |\n", "ĐƠN HÀNG");
+            System.out.println("=========================================================================");
             System.out.printf("| %-15s | %-15s | %-15s | %-15s |%n",
                 "Mã đơn", "Đặt máy", "Tổng tiền", "Trạng thái");
-            System.out.println("----------------------------------------------------------------------");
+            System.out.println("=========================================================================");
 
             for (Order order : orders) {
                 String bookingCode = "N/A";
@@ -507,10 +510,9 @@ public class CustomerService {
                     order.getTotalAmount(),
                     order.getOrderStatus().toString());
             }
-            System.out.println("----------------------------------------------------------------------\n");
+            System.out.println("=========================================================================\n");
         }
 
-        System.out.println("======================================================================\n");
     }
 
     public void cancelBooking() {
@@ -523,12 +525,12 @@ public class CustomerService {
         List<Booking> pendingBookings = bookingDAO.findByCustomerIdAndStatus(currentUser.getUserId(), BookingStatus.PENDING);
 
         if (pendingBookings == null || pendingBookings.isEmpty()) {
-            System.out.println("Bạn không có đặt máy nào đang chờ để hủy.");
+            System.out.println("Bạn không có máy nào để hủy.");
             return;
         }
 
         System.out.println("\n=========================================================================");
-        System.out.printf("| %-69s |%n", "DANH SÁCH ĐẶT MÁY CHỜ HỦY");
+        System.out.printf("| %-69s |%n", "DANH SÁCH MÁY");
         System.out.println("=========================================================================");
         System.out.printf("| %-5s | %-15s | %-20s | %-20s |%n", "STT", "Mã đặt", "Máy", "Thời gian bắt đầu");
         System.out.println("-------------------------------------------------------------------------");
@@ -564,71 +566,71 @@ public class CustomerService {
         }
     }
 
-    public void viewPendingBookings() {
-        User currentUser = SessionManager.getCurrentUser();
-        if (currentUser == null) {
-            System.out.println("Lỗi: Không thể lấy dữ liệu người dùng");
-            return;
-        }
-
-        List<Booking> pendingBookings = bookingDAO.findByCustomerIdAndStatus(currentUser.getUserId(), BookingStatus.PENDING);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
-        System.out.println("\n==============================================================================");
-        System.out.printf("| %-82s |%n", "DANH SÁCH ĐẶT MÁY ĐANG CHỜ");
-        System.out.println("==============================================================================");
-
-        if (pendingBookings == null || pendingBookings.isEmpty()) {
-            System.out.println("| Không có đặt máy nào đang chờ                                        |");
-        } else {
-            System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n", "Mã đặt", "Máy", "Thời gian bắt đầu", "Trạng thái");
-            System.out.println("==============================================================================");
-            for (Booking booking : pendingBookings) {
-                Workstation ws = workstationDAO.findById(booking.getWorkstationId());
-                String startTimeStr = booking.getStartTime() != null ? booking.getStartTime().format(formatter) : "N/A";
-                System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n",
-                    booking.getBookingCode(),
-                    ws != null ? ws.getStationName() : "N/A",
-                    startTimeStr,
-                    booking.getBookingStatus().toString());
-            }
-        }
-        System.out.println("==============================================================================\n");
-    }
-
-    public void viewCancelledBookings() {
-        User currentUser = SessionManager.getCurrentUser();
-        if (currentUser == null) {
-            System.out.println("Lỗi: Không thể lấy dữ liệu người dùng");
-            return;
-        }
-
-        List<Booking> cancelledBookings = bookingDAO.findByCustomerIdAndStatus(currentUser.getUserId(), BookingStatus.CANCELLED);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
-        System.out.println("\n==============================================================================");
-        System.out.printf("| %-82s |%n", "DANH SÁCH ĐẶT MÁY ĐÃ HỦY");
-        System.out.println("==============================================================================");
-
-        if (cancelledBookings == null || cancelledBookings.isEmpty()) {
-            System.out.println("| Không có đặt máy nào đã hủy                                            |");
-        } else {
-            System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n", "Mã đặt", "Máy", "Thời gian bắt đầu", "Trạng thái");
-            System.out.println("==============================================================================");
-            for (Booking booking : cancelledBookings) {
-                Workstation ws = workstationDAO.findById(booking.getWorkstationId());
-                String startTimeStr = booking.getStartTime() != null ? booking.getStartTime().format(formatter) : "N/A";
-                System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n",
-                    booking.getBookingCode(),
-                    ws != null ? ws.getStationName() : "N/A",
-                    startTimeStr,
-                    booking.getBookingStatus().toString());
-            }
-        }
-        System.out.println("==============================================================================\n");
-    }
+//    public void viewPendingBookings() {
+//        User currentUser = SessionManager.getCurrentUser();
+//        if (currentUser == null) {
+//            System.out.println("Lỗi: Không thể lấy dữ liệu người dùng");
+//            return;
+//        }
+//
+//        List<Booking> pendingBookings = bookingDAO.findByCustomerIdAndStatus(currentUser.getUserId(), BookingStatus.PENDING);
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+//
+//        System.out.println("\n==============================================================================");
+//        System.out.printf("| %-82s |%n", "DANH SÁCH MÁY ĐANG CHỜ");
+//        System.out.println("==============================================================================");
+//
+//        if (pendingBookings == null || pendingBookings.isEmpty()) {
+//            System.out.println("| Không có máy nào đang chờ                                        |");
+//        } else {
+//            System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n", "Mã đặt", "Máy", "Thời gian bắt đầu", "Trạng thái");
+//            System.out.println("==============================================================================");
+//            for (Booking booking : pendingBookings) {
+//                Workstation ws = workstationDAO.findById(booking.getWorkstationId());
+//                String startTimeStr = booking.getStartTime() != null ? booking.getStartTime().format(formatter) : "N/A";
+//                System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n",
+//                    booking.getBookingCode(),
+//                    ws != null ? ws.getStationName() : "N/A",
+//                    startTimeStr,
+//                    booking.getBookingStatus().toString());
+//            }
+//        }
+//        System.out.println("==============================================================================\n");
+//    }
+//
+//    public void viewCancelledBookings() {
+//        User currentUser = SessionManager.getCurrentUser();
+//        if (currentUser == null) {
+//            System.out.println("Lỗi: Không thể lấy dữ liệu người dùng");
+//            return;
+//        }
+//
+//        List<Booking> cancelledBookings = bookingDAO.findByCustomerIdAndStatus(currentUser.getUserId(), BookingStatus.CANCELLED);
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+//
+//        System.out.println("\n==============================================================================");
+//        System.out.printf("| %-82s |%n", "DANH SÁCH ĐẶT MÁY ĐÃ HỦY");
+//        System.out.println("==============================================================================");
+//
+//        if (cancelledBookings == null || cancelledBookings.isEmpty()) {
+//            System.out.println("| Không có đặt máy nào đã hủy                                            |");
+//        } else {
+//            System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n", "Mã đặt", "Máy", "Thời gian bắt đầu", "Trạng thái");
+//            System.out.println("==============================================================================");
+//            for (Booking booking : cancelledBookings) {
+//                Workstation ws = workstationDAO.findById(booking.getWorkstationId());
+//                String startTimeStr = booking.getStartTime() != null ? booking.getStartTime().format(formatter) : "N/A";
+//                System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n",
+//                    booking.getBookingCode(),
+//                    ws != null ? ws.getStationName() : "N/A",
+//                    startTimeStr,
+//                    booking.getBookingStatus().toString());
+//            }
+//        }
+//        System.out.println("==============================================================================\n");
+//    }
 
     public void closeWorkstation() {
         User currentUser = SessionManager.getCurrentUser();
@@ -713,7 +715,6 @@ public class CustomerService {
             System.out.println("Trạng thái: PAID");
         }
         
-        // Update booking status and save
         selectedBooking.setBookingStatus(BookingStatus.COMPLETED);
         bookingDAO.update(selectedBooking);
     }
@@ -727,15 +728,15 @@ public class CustomerService {
 
         List<Booking> bookings = bookingDAO.findByCustomerId(currentUser.getUserId());
 
-        System.out.println("\n====================================================================================");
-        System.out.println("|                       LỊCH SỬ ĐẶT MÁY                                          |");
-        System.out.println("====================================================================================");
+        System.out.println("\n================================================================================================");
+        System.out.printf("| %-92s |\n", "LỊCH SỬ ĐẶT MÁY");
+        System.out.println("================================================================================================");
 
         if (bookings == null || bookings.isEmpty()) {
             System.out.println("| Không có lịch sử đặt máy                                                        |");
         } else {
             System.out.printf("| %-15s | %-20s | %-20s | %-15s | %-10s |%n", "Mã đặt", "Máy", "Thời gian bắt đầu", "Tổng tiền", "Trạng thái");
-            System.out.println("====================================================================================");
+            System.out.println("================================================================================================");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             
             for (Booking booking : bookings) {
@@ -749,7 +750,7 @@ public class CustomerService {
                     booking.getBookingStatus().toString());
             }
         }
-        System.out.println("====================================================================================\n");
+        System.out.println("================================================================================================");
     }
 
     public void viewUnpaidWorkstations() {
@@ -965,15 +966,15 @@ public class CustomerService {
 
         List<Order> orders = orderDAO.findByCustomerId(currentUser.getUserId());
 
-        System.out.println("\n======================================================================");
-        System.out.println("|                       LỊCH SỬ ĐƠN HÀNG                            |");
-        System.out.println("======================================================================");
+        System.out.println("\n=========================================================================");
+        System.out.println("|                       LỊCH SỬ ĐƠN HÀNG                                |");
+        System.out.println("=========================================================================");
 
         if (orders == null || orders.isEmpty()) {
-            System.out.println("| Không có lịch sử đơn hàng                                         |");
+            System.out.println("| Không có lịch sử đơn hàng                                             |");
         } else {
             System.out.printf("| %-15s | %-15s | %-15s | %-15s |%n", "Mã đơn", "Đặt máy", "Tổng tiền", "Trạng thái");
-            System.out.println("----------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------");
             for (Order order : orders) {
                 String bookingCode = "N/A";
                 List<Booking> bookings = bookingDAO.findByCustomerId(currentUser.getUserId());
@@ -987,7 +988,7 @@ public class CustomerService {
                     order.getOrderCode(), bookingCode, order.getTotalAmount(), order.getOrderStatus().toString());
             }
         }
-        System.out.println("======================================================================\n");
+        System.out.println("=========================================================================\n");
     }
 
     public void addMoney() {

@@ -14,6 +14,8 @@ dependencies {
     implementation("com.mysql:mysql-connector-j:9.6.0")
     implementation("io.github.cdimascio:dotenv-java:3.0.0")
     implementation("org.mindrot:jbcrypt:0.4")
+    implementation("org.apache.poi:poi:5.5.1")
+    implementation("org.apache.poi:poi-ooxml:5.5.1")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

@@ -25,7 +25,7 @@ public class AdminMenu {
             System.out.printf("| %-36s |\n", "2. Quản lý phòng máy");
             System.out.printf("| %-36s |\n", "3. Quản lý menu đồ ăn, thức uống");
             System.out.printf("| %-36s |\n", "4. Quản lý người dùng");
-            System.out.printf("| %-36s |\n", "5. Xem báo cáo tổng quát");
+            System.out.printf("| %-36s |\n", "5. Xuất báo cáo");
             System.out.printf("| %-36s |\n", "0. Đăng xuất");
             System.out.println("+======================================+");
             System.out.print("Chọn: ");
@@ -47,7 +47,7 @@ public class AdminMenu {
                         showUserManagementMenu();
                         break;
                     case 5:
-                        System.out.println("Bạn chọn: Xem báo cáo tổng quát");
+                        showReportMenu();
                         break;
                     case 0:
                         System.out.println("Đăng xuất...");
@@ -236,5 +236,11 @@ public class AdminMenu {
                 System.out.println("Lỗi: Vui lòng nhập một số hợp lệ!");
             }
         }
+    }
+
+    public void showReportMenu() {
+        System.out.println("\nNhập ngày xuất báo cáo (định dạng: dd/MM/yyyy), hoặc Enter để chọn hôm nay: ");
+        String dateInput = scanner.nextLine().trim();
+        adminService.exportDailyRevenueToExcel(dateInput);
     }
 }

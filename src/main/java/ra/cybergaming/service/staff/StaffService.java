@@ -5,6 +5,7 @@ import ra.cybergaming.model.*;
 import ra.cybergaming.model.enums.BookingStatus;
 import ra.cybergaming.model.enums.OrderStatus;
 import ra.cybergaming.model.enums.WorkingStationStatus;
+import ra.cybergaming.service.auth.SessionManager;
 import ra.cybergaming.util.InputHandler;
 
 import java.time.format.DateTimeFormatter;
@@ -36,7 +37,7 @@ public class StaffService {
         }
 
         System.out.println("\n===========================================================================================");
-        System.out.printf("| %-89s |%n", "DANH SÁCH BOOKING ĐANG CHỜ TIẾP NHẬN");
+        System.out.printf("| %-87s |%n", "DANH SÁCH BOOKING ĐANG CHỜ TIẾP NHẬN");
         System.out.println("===========================================================================================");
         System.out.printf("| %-5s | %-15s | %-20s | %-15s | %-20s |%n", 
             "STT", "Mã đặt", "Khách hàng", "Máy", "Thời gian bắt đầu");
@@ -72,6 +73,7 @@ public class StaffService {
         Booking selectedBooking = pendingBookings.get(choice - 1);
 
         selectedBooking.setBookingStatus(BookingStatus.ACTIVE);
+        selectedBooking.setStaffId(SessionManager.getCurrentUser().getUserId());
         
         Workstation workstation = workstationDAO.findById(selectedBooking.getWorkstationId());
         if (workstation != null) {
@@ -97,7 +99,7 @@ public class StaffService {
         }
 
         System.out.println("\n===========================================================================================");
-        System.out.printf("| %-89s |%n", "DANH SÁCH BOOKING ĐANG HOẠT ĐỘNG");
+        System.out.printf("| %-87s |%n", "DANH SÁCH BOOKING ĐANG HOẠT ĐỘNG");
         System.out.println("===========================================================================================");
         System.out.printf("| %-5s | %-15s | %-20s | %-15s | %-20s |%n", 
             "STT", "Mã đặt", "Khách hàng", "Máy", "Thời gian bắt đầu");
@@ -133,10 +135,10 @@ public class StaffService {
         Booking selectedBooking = activeBookings.get(choice - 1);
 
         System.out.println("\n+======================================+");
-        System.out.println("| Chọn trạng thái mới:                |");
+        System.out.println("| Chọn trạng thái mới:                 |");
         System.out.println("+======================================+");
-        System.out.println("| 1. COMPLETED                        |");
-        System.out.println("| 2. CANCELLED                        |");
+        System.out.println("| 1. COMPLETED                         |");
+        System.out.println("| 2. CANCELLED                         |");
         System.out.println("+======================================+");
 
         int statusChoice = InputHandler.inputInt("Chọn: ");
@@ -180,12 +182,12 @@ public class StaffService {
             return;
         }
 
-        System.out.println("\n=================================================================================");
-        System.out.printf("| %-89s |%n", "DANH SÁCH ORDER ĐANG CHỜ TIẾP NHẬN");
-        System.out.println("=================================================================================");
-        System.out.printf("| %-5s | %-15s | %-20s | %-15s | %-15s |%n", 
+        System.out.println("\n=======================================================================================");
+        System.out.printf("| %-83s |%n", "DANH SÁCH ORDER ĐANG CHỜ TIẾP NHẬN");
+        System.out.println("=======================================================================================");
+        System.out.printf("| %-5s | %-15s | %-20s | %-15s | %-16s |%n",
             "STT", "Mã order", "Khách hàng", "Tổng tiền", "Thời gian");
-        System.out.println("---------------------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------------");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -198,7 +200,7 @@ public class StaffService {
             System.out.printf("| %-5d | %-15s | %-20s | %-15.2f | %-15s |%n",
                 i + 1, order.getOrderCode(), customerName, order.getTotalAmount(), createdTime);
         }
-        System.out.println("=================================================================================\n");
+        System.out.println("=======================================================================================\n");
 
         int choice = InputHandler.inputInt("Chọn order cần tiếp nhận (0 để hủy): ");
 
@@ -251,7 +253,7 @@ public class StaffService {
         }
 
         System.out.println("\n=================================================================================");
-        System.out.printf("| %-89s |%n", "DANH SÁCH ORDER ĐANG XÁC NHẬN");
+        System.out.printf("| %-87s |%n", "DANH SÁCH ORDER ĐANG XÁC NHẬN");
         System.out.println("=================================================================================");
         System.out.printf("| %-5s | %-15s | %-20s | %-15s | %-15s |%n", 
             "STT", "Mã order", "Khách hàng", "Tổng tiền", "Thời gian");
@@ -285,10 +287,10 @@ public class StaffService {
         Order selectedOrder = confirmedOrders.get(choice - 1);
 
         System.out.println("\n+======================================+");
-        System.out.println("| Chọn trạng thái mới:                |");
+        System.out.println("| Chọn trạng thái mới:                 |");
         System.out.println("+======================================+");
-        System.out.println("| 1. COMPLETED                        |");
-        System.out.println("| 2. CANCELLED                        |");
+        System.out.println("| 1. COMPLETED                         |");
+        System.out.println("| 2. CANCELLED                         |");
         System.out.println("+======================================+");
 
         int statusChoice = InputHandler.inputInt("Chọn: ");

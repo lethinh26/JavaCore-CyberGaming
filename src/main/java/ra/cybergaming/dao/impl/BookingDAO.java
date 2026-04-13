@@ -113,17 +113,22 @@ public class BookingDAO implements IBaseDAO<Booking> {
             return false;
         }
 
-        String sql = "UPDATE bookings SET end_time = ?, total_amount = ?, booking_status = ?, payment_status = ?, updated_at = ? WHERE booking_id = ?";
+        String sql = "UPDATE bookings SET staff_id = ?, end_time = ?, total_amount = ?, booking_status = ?, payment_status = ?, updated_at = ? WHERE booking_id = ?";
 
         try (Connection conn = DBConnector.openConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setTimestamp(1, entity.getEndTime() != null ? Timestamp.valueOf(entity.getEndTime()) : null);
-            pstmt.setDouble(2, entity.getTotalAmount());
-            pstmt.setString(3, entity.getBookingStatus().toString());
-            pstmt.setString(4, entity.getPaymentStatus() != null ? entity.getPaymentStatus().toString() : null);
-            pstmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setInt(6, entity.getBookingId());
+            if (entity.getStaffId() != null) {
+                pstmt.setInt(1, entity.getStaffId());
+            } else {
+                pstmt.setNull(1, Types.INTEGER);
+            }
+            pstmt.setTimestamp(2, entity.getEndTime() != null ? Timestamp.valueOf(entity.getEndTime()) : null);
+            pstmt.setDouble(3, entity.getTotalAmount());
+            pstmt.setString(4, entity.getBookingStatus().toString());
+            pstmt.setString(5, entity.getPaymentStatus() != null ? entity.getPaymentStatus().toString() : null);
+            pstmt.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setInt(7, entity.getBookingId());
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException | ClassNotFoundException e) {
@@ -276,6 +281,16 @@ public class BookingDAO implements IBaseDAO<Booking> {
         String paymentStatus = rs.getString("payment_status");
         if (paymentStatus != null) {
             booking.setPaymentStatus(PaymentStatus.valueOf(paymentStatus));
+        }
+
+        Timestamp createdAt = rs.getTimestamp("created_at");
+        if (createdAt != null) {
+            booking.setCreatedAt(createdAt.toLocalDateTime());
+        }
+
+        Timestamp updatedAt = rs.getTimestamp("updated_at");
+        if (updatedAt != null) {
+            booking.setUpdatedAt(updatedAt.toLocalDateTime());
         }
 
         return booking;

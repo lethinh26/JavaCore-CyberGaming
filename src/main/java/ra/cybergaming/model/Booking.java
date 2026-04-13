@@ -134,6 +134,9 @@ public class Booking {
     public void setCreatedAt() {
         this.createdAt = LocalDateTime.now();
     }
+    public void setCreatedAt(LocalDateTime time) {
+        this.createdAt = time;
+    }
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
@@ -142,4 +145,8 @@ public class Booking {
     public void setUpdatedAt() {
         this.updatedAt = LocalDateTime.now();
     }
+    public void setUpdatedAt(LocalDateTime time) {
+        this.updatedAt = time;
+    }
+
 }
