@@ -1,12 +1,17 @@
 package ra.cybergaming.presentation;
 
+import ra.cybergaming.service.admin.AdminService;
+import ra.cybergaming.util.InputHandler;
+
 import java.util.Scanner;
 
 public class AdminMenu {
     private Scanner scanner;
+    private AdminService adminService;
 
     public AdminMenu(Scanner scanner) {
         this.scanner = scanner;
+        this.adminService = new AdminService();
     }
 
     public void showMainMenu() {
@@ -73,16 +78,16 @@ public class AdminMenu {
 
                 switch (choice) {
                     case 1:
-                        System.out.println("Bạn chọn: Xem danh sách máy trạm");
+                        adminService.displayWorkstations();
                         break;
                     case 2:
-                        System.out.println("Bạn chọn: Thêm máy trạm mới");
+                        adminService.addWorkstation();
                         break;
                     case 3:
-                        System.out.println("Bạn chọn: Cập nhật máy trạm");
+                        adminService.updateWorkstation();
                         break;
                     case 4:
-                        System.out.println("Bạn chọn: Xóa máy trạm");
+                        adminService.deleteWorkstation();
                         break;
                     case 0:
                         System.out.println("Quay lại menu chính...");
@@ -117,16 +122,16 @@ public class AdminMenu {
 
                 switch (choice) {
                     case 1:
-                        System.out.println("Bạn chọn: Xem danh sách phòng máy");
+                        adminService.displayAreas();
                         break;
                     case 2:
-                        System.out.println("Bạn chọn: Thêm phòng máy mới");
+                        adminService.addArea();
                         break;
                     case 3:
-                        System.out.println("Bạn chọn: Cập nhật phòng máy");
+                        adminService.updateArea();
                         break;
                     case 4:
-                        System.out.println("Bạn chọn: Xóa phòng máy");
+                        adminService.deleteArea();
                         break;
                     case 0:
                         System.out.println("Quay lại menu chính...");
@@ -161,16 +166,16 @@ public class AdminMenu {
 
                 switch (choice) {
                     case 1:
-                        System.out.println("Bạn chọn: Xem menu đồ ăn/thức uống");
+                        adminService.displayServices();
                         break;
                     case 2:
-                        System.out.println("Bạn chọn: Thêm vào menu");
+                        adminService.addService();
                         break;
                     case 3:
-                        System.out.println("Bạn chọn: Cập nhật menu");
+                        adminService.updateService();
                         break;
                     case 4:
-                        System.out.println("Bạn chọn: Xóa món trong menu");
+                        adminService.deleteService();
                         break;
                     case 0:
                         System.out.println("Quay lại menu chính...");

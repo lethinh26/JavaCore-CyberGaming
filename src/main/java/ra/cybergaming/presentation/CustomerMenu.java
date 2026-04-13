@@ -11,7 +11,7 @@ public class CustomerMenu {
 
     public CustomerMenu(Scanner scanner) {
         this.scanner = scanner;
-        customerService = CustomerService.getInstance();
+        this.customerService = new CustomerService();
     }
 
     public void showMenu() {

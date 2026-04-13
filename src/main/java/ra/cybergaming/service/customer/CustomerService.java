@@ -22,23 +22,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerService {
-    private static CustomerService instance;
-    private static final WorkstationDAO workstationDAO = new WorkstationDAO();
-    private static final BookingDAO bookingDAO = new BookingDAO();
-    private static final ServiceDAO serviceDAO = new ServiceDAO();
-    private static final OrderDAO orderDAO = new OrderDAO();
-    private static final UserDAO userDAO = new UserDAO();
+    private WorkstationDAO workstationDAO;
+    private BookingDAO bookingDAO;
+    private ServiceDAO serviceDAO;
+    private OrderDAO orderDAO;
+    private UserDAO userDAO;
 
     protected final List<OrderItem> orderItemList = new ArrayList<>();
     private Order currentOrder = null;
 
-    private CustomerService() {}
-
-    public static CustomerService getInstance() {
-        if (instance == null) {
-            instance = new CustomerService();
-        }
-        return instance;
+    public CustomerService() {
+        this.workstationDAO = new WorkstationDAO();
+        this.bookingDAO = new BookingDAO();
+        this.serviceDAO = new ServiceDAO();
+        this.orderDAO = new OrderDAO();
+        this.userDAO = new UserDAO();
     }
 
     public void showInfo() {
