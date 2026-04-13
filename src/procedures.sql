@@ -280,7 +280,7 @@ proc_label: BEGIN
     IF v_booking_exists = 0 THEN
         ROLLBACK;
         SET p_status = 'BOOKING_NOT_FOUND';
-        SET p_message = 'Đặt máy không tồn tại';
+        SET p_message = 'Booking không tồn tại';
         SET p_total_amount = 0;
         LEAVE proc_label;
     END IF;

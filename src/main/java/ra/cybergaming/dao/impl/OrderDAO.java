@@ -32,10 +32,14 @@ public class OrderDAO implements IBaseDAO<Order> {
 
             pstmt.setInt(1, entity.getBookingId());
             pstmt.setInt(2, entity.getCustomerId());
-            pstmt.setInt(3, entity.getStaffId() > 0 ? entity.getStaffId() : 0);
+            if (entity.getStaffId() > 0) {
+                pstmt.setInt(3, entity.getStaffId());
+            } else {
+                pstmt.setNull(3, Types.INTEGER);
+            }
             pstmt.setString(4, entity.getNote());
             pstmt.setString(5, OrderStatus.PENDING.toString());
-            pstmt.setDouble(6, 0.00);
+            pstmt.setDouble(6, entity.getTotalAmount());
             pstmt.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
             pstmt.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
 
@@ -111,7 +115,11 @@ public class OrderDAO implements IBaseDAO<Order> {
 
             pstmt.setString(1, entity.getOrderStatus().toString());
             pstmt.setDouble(2, entity.getTotalAmount());
-            pstmt.setInt(3, entity.getStaffId() > 0 ? entity.getStaffId() : 0);
+            if (entity.getStaffId() > 0) {
+                pstmt.setInt(3, entity.getStaffId());
+            } else {
+                pstmt.setNull(3, Types.INTEGER);
+            }
             pstmt.setString(4, entity.getNote());
             pstmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
             pstmt.setInt(6, entity.getOrderId());

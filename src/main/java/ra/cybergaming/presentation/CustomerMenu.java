@@ -23,7 +23,7 @@ public class CustomerMenu {
             System.out.println("+======================================+");
             System.out.printf("| %-36s |\n", "1. Xem thông tin tài khoản");
             System.out.printf("| %-36s |\n", "2. Đặt trước máy trạm");
-            System.out.printf("| %-36s |\n", "3. Đặt đồ ăn/thức uống");
+            System.out.printf("| %-36s |\n", "3. Đặt đồ ăn, thức uống");
             System.out.printf("| %-36s |\n", "4. Xem lịch sử giao dịch");
             System.out.printf("| %-36s |\n", "0. Đăng xuất");
             System.out.println("+======================================+");
@@ -68,8 +68,9 @@ public class CustomerMenu {
             System.out.println("+======================================+");
             System.out.printf("| %-38s |\n", "1. Đặt máy trạm");
             System.out.printf("| %-38s |\n", "2. Hủy đặt máy trạm");
-            System.out.printf("| %-38s |\n", "3. Xem danh sách đã đặt");
-            System.out.printf("| %-38s |\n", "4. Xem danh sách đã hủy");
+            System.out.printf("| %-38s |\n", "3. Đóng máy trạm");
+            System.out.printf("| %-38s |\n", "4. Xem máy chưa thanh toán");
+            System.out.printf("| %-38s |\n", "5. Xem lịch sử đặt máy");
             System.out.printf("| %-38s |\n", "0. Quay lại");
             System.out.println("+======================================+");
             System.out.print("Chọn: ");
@@ -87,12 +88,16 @@ public class CustomerMenu {
                         customerService.cancelBooking();
                         break;
                     case 3:
-                        System.out.println("Bạn chọn: Xem danh sách đã đặt");
-                        customerService.viewPendingBookings();
+                        System.out.println("Bạn chọn: Đóng máy trạm");
+                        customerService.closeWorkstation();
                         break;
                     case 4:
-                        System.out.println("Bạn chọn: Xem danh sách đã hủy");
-                        customerService.viewCancelledBookings();
+                        System.out.println("Bạn chọn: Xem máy chưa thanh toán");
+                        customerService.viewUnpaidWorkstations();
+                        break;
+                    case 5:
+                        System.out.println("Bạn chọn: Xem lịch sử đặt máy");
+                        customerService.viewBookingHistory();
                         break;
                     case 0:
                         System.out.println("Quay lại menu chính...");
@@ -112,13 +117,13 @@ public class CustomerMenu {
 
         while (isRunning) {
             System.out.println("\n+======================================+");
-            System.out.printf("| %-38s |\n", "ĐẶT ĐỒ ĂN / THỨC UỐNG");
+            System.out.printf("| %-36s |\n", "ĐẶT ĐỒ ĂN, THỨC UỐNG");
             System.out.println("+======================================+");
-            System.out.printf("| %-38s |\n", "1. Thêm đồ ăn/thức uống vào giỏ");
-            System.out.printf("| %-38s |\n", "2. Hủy đơn hàng");
-            System.out.printf("| %-38s |\n", "3. Xem đơn hàng đang chờ");
-            System.out.printf("| %-38s |\n", "4. Xem đơn hàng đã hủy");
-            System.out.printf("| %-38s |\n", "0. Quay lại");
+            System.out.printf("| %-36s |\n", "1. Đặt món");
+            System.out.printf("| %-36s |\n", "2. Xem trạng thái đơn hàng");
+            System.out.printf("| %-36s |\n", "3. Hủy đơn hàng");
+            System.out.printf("| %-36s |\n", "4. Lịch sử đơn hàng");
+            System.out.printf("| %-36s |\n", "0. Quay lại");
             System.out.println("+======================================+");
             System.out.print("Chọn: ");
 
@@ -127,20 +132,20 @@ public class CustomerMenu {
 
                 switch (choice) {
                     case 1:
-                        System.out.println("Bạn chọn: Đặt đồ ăn/thức uống");
+                        System.out.println("Bạn chọn: Đặt món");
                         customerService.orderFood();
                         break;
                     case 2:
+                        System.out.println("Bạn chọn: Xem trạng thái đơn hàng");
+                        customerService.viewOrderStatus();
+                        break;
+                    case 3:
                         System.out.println("Bạn chọn: Hủy đơn hàng");
                         customerService.cancelOrder();
                         break;
-                    case 3:
-                        System.out.println("Bạn chọn: Xem danh sách đơn hàng đang chờ");
-                        customerService.viewPendingOrders();
-                        break;
                     case 4:
-                        System.out.println("Bạn chọn: Xem danh sách đã hủy");
-                        customerService.viewCancelledOrders();
+                        System.out.println("Bạn chọn: Lịch sử đơn hàng");
+                        customerService.viewOrderHistory();
                         break;
                     case 0:
                         System.out.println("Quay lại menu chính...");

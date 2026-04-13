@@ -1,6 +1,7 @@
 package ra.cybergaming.model;
 
 import ra.cybergaming.model.enums.BookingStatus;
+import ra.cybergaming.model.enums.PaymentStatus;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +15,7 @@ public class Booking {
     private LocalDateTime endTime;
     private double totalAmount;
     private BookingStatus bookingStatus;
+    private PaymentStatus paymentStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -28,6 +30,7 @@ public class Booking {
         this.endTime = endTime;
         this.totalAmount = totalAmount;
         this.bookingStatus = bookingStatus;
+        this.paymentStatus = PaymentStatus.UNPAID;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -79,12 +82,20 @@ public class Booking {
         return startTime;
     }
 
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
     public void setStartTime() {
         this.startTime = LocalDateTime.now();
     }
 
     public LocalDateTime getEndTime() {
         return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public void setEndTime() {
@@ -106,6 +117,15 @@ public class Booking {
     public void setBookingStatus(BookingStatus bookingStatus) {
         this.bookingStatus = bookingStatus;
     }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

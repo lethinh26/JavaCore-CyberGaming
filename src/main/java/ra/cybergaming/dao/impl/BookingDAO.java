@@ -3,6 +3,7 @@ package ra.cybergaming.dao.impl;
 import ra.cybergaming.dao.IBaseDAO;
 import ra.cybergaming.model.Booking;
 import ra.cybergaming.model.enums.BookingStatus;
+import ra.cybergaming.model.enums.PaymentStatus;
 import ra.cybergaming.util.DBConnector;
 
 import java.sql.*;
@@ -112,7 +113,7 @@ public class BookingDAO implements IBaseDAO<Booking> {
             return false;
         }
 
-        String sql = "UPDATE bookings SET end_time = ?, total_amount = ?, booking_status = ?, updated_at = ? WHERE booking_id = ?";
+        String sql = "UPDATE bookings SET end_time = ?, total_amount = ?, booking_status = ?, payment_status = ?, updated_at = ? WHERE booking_id = ?";
 
         try (Connection conn = DBConnector.openConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -120,8 +121,9 @@ public class BookingDAO implements IBaseDAO<Booking> {
             pstmt.setTimestamp(1, entity.getEndTime() != null ? Timestamp.valueOf(entity.getEndTime()) : null);
             pstmt.setDouble(2, entity.getTotalAmount());
             pstmt.setString(3, entity.getBookingStatus().toString());
-            pstmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setInt(5, entity.getBookingId());
+            pstmt.setString(4, entity.getPaymentStatus() != null ? entity.getPaymentStatus().toString() : null);
+            pstmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setInt(6, entity.getBookingId());
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException | ClassNotFoundException e) {
@@ -256,12 +258,12 @@ public class BookingDAO implements IBaseDAO<Booking> {
 
         Timestamp startTime = rs.getTimestamp("start_time");
         if (startTime != null) {
-            booking.setStartTime();
+            booking.setStartTime(startTime.toLocalDateTime());
         }
 
         Timestamp endTime = rs.getTimestamp("end_time");
         if (endTime != null) {
-            booking.setEndTime();
+            booking.setEndTime(endTime.toLocalDateTime());
         }
 
         double totalAmount = rs.getDouble("total_amount");
@@ -270,6 +272,11 @@ public class BookingDAO implements IBaseDAO<Booking> {
         }
 
         booking.setBookingStatus(BookingStatus.valueOf(rs.getString("booking_status")));
+        
+        String paymentStatus = rs.getString("payment_status");
+        if (paymentStatus != null) {
+            booking.setPaymentStatus(PaymentStatus.valueOf(paymentStatus));
+        }
 
         return booking;
     }
