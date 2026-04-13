@@ -221,6 +221,26 @@ public class OrderDAO implements IBaseDAO<Order> {
         return orders;
     }
 
+    public List<Order> findByStatus(OrderStatus status) {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE order_status = ? ORDER BY created_at DESC";
+
+        try (Connection conn = DBConnector.openConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, status.toString());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                orders.add(mapResultSetToOrder(rs));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Lỗi: Không thể lấy danh sách đơn hàng theo trạng thái - " + e.getMessage());
+        }
+
+        return orders;
+    }
+
     public boolean updateOrderTotal(int orderId) {
         String sql = "UPDATE orders SET total_amount = (SELECT COALESCE(SUM(line_total), 0) FROM order_items WHERE order_id = ?), updated_at = ? WHERE order_id = ?";
 

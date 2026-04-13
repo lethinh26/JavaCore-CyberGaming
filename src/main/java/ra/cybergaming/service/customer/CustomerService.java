@@ -1,9 +1,6 @@
 package ra.cybergaming.service.customer;
 
-import ra.cybergaming.dao.impl.BookingDAO;
-import ra.cybergaming.dao.impl.OrderDAO;
-import ra.cybergaming.dao.impl.ServiceDAO;
-import ra.cybergaming.dao.impl.WorkstationDAO;
+import ra.cybergaming.dao.impl.*;
 import ra.cybergaming.model.Booking;
 import ra.cybergaming.model.Order;
 import ra.cybergaming.model.OrderItem;
@@ -30,6 +27,7 @@ public class CustomerService {
     private static final BookingDAO bookingDAO = new BookingDAO();
     private static final ServiceDAO serviceDAO = new ServiceDAO();
     private static final OrderDAO orderDAO = new OrderDAO();
+    private static final UserDAO userDAO = new UserDAO();
 
     protected final List<OrderItem> orderItemList = new ArrayList<>();
     private Order currentOrder = null;
@@ -394,6 +392,22 @@ public class CustomerService {
         System.out.printf("| %-5s | %-20s | %-15s | %-10s | %-15.2f |%n", "", "", "", "Tổng:", totalAmount);
         System.out.println("======================================================================\n");
 
+        User currentUser = SessionManager.getCurrentUser();
+        if (currentUser == null) {
+            System.out.println("Lỗi: Không thể lấy dữ liệu người dùng");
+            return;
+        }
+
+        if (currentUser.getBalance() < totalAmount) {
+            System.out.printf("Tài khoản không đủ tiền!%n");
+            System.out.printf("Số dư hiện tại: %.2f%n", currentUser.getBalance());
+            System.out.printf("Số tiền cần: %.2f%n", totalAmount);
+            System.out.printf("Thiếu: %.2f%n", totalAmount - currentUser.getBalance());
+            orderItemList.clear();
+            currentOrder = null;
+            return;
+        }
+
         String note = InputHandler.inputString("Nhập ghi chú: ");
         
         currentOrder.setTotalAmount(totalAmount);
@@ -402,9 +416,14 @@ public class CustomerService {
         }
 
         if (orderDAO.create(currentOrder)) {
-            System.out.println("\nĐặt hàng thành công!");
+            double newBalance = currentUser.getBalance() - totalAmount;
+            currentUser.setBalance(newBalance);
+            userDAO.update(currentUser);
+            
+            System.out.println("\n✓ Đặt hàng thành công!");
             System.out.println("Mã đơn hàng: " + currentOrder.getOrderCode());
-            System.out.println("Tổng tiền: " + totalAmount);
+            System.out.printf("Tổng tiền: %.2f%n", totalAmount);
+            System.out.printf("Số dư còn lại: %.2f%n", newBalance);
             
             for (OrderItem item : orderItemList) {
                 item.setOrderId(currentOrder.getOrderId());
