@@ -41,3 +41,9 @@ tasks.withType<JavaExec>().configureEach {
     jvmArgs("-Dstdout.encoding=UTF-8", "-Dstderr.encoding=UTF-8")
     standardInput = System.`in`
 }
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "ra.cybergaming.Main"
+    }
+}

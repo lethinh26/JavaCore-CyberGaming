@@ -5,7 +5,6 @@ import ra.cybergaming.model.Area;
 import ra.cybergaming.util.DBConnector;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,17 +17,13 @@ public class AreaDAO implements IBaseDAO<Area> {
             return false;
         }
 
-        String sql = "INSERT INTO areas (area_name, area_size, note, created_at, updated_at) " +
-                     "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO areas (area_name, description) VALUES (?, ?)";
 
         try (Connection conn = DBConnector.openConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, entity.getAreaName());
-            pstmt.setString(2, entity.getAreaSize());
-            pstmt.setString(3, entity.getNote());
-            pstmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setString(2, entity.getDescription());
 
             if (pstmt.executeUpdate() > 0) {
                 ResultSet rs = pstmt.getGeneratedKeys();
@@ -70,7 +65,7 @@ public class AreaDAO implements IBaseDAO<Area> {
     @Override
     public List<Area> findAll() {
         List<Area> areas = new ArrayList<>();
-        String sql = "SELECT * FROM areas ORDER BY created_at DESC";
+        String sql = "SELECT * FROM areas";
 
         try (Connection conn = DBConnector.openConnection();
              Statement stmt = conn.createStatement();
@@ -94,16 +89,14 @@ public class AreaDAO implements IBaseDAO<Area> {
             return false;
         }
 
-        String sql = "UPDATE areas SET area_name = ?, area_size = ?, note = ?, updated_at = ? WHERE area_id = ?";
+        String sql = "UPDATE areas SET area_name = ?, description = ? WHERE area_id = ?";
 
         try (Connection conn = DBConnector.openConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, entity.getAreaName());
-            pstmt.setString(2, entity.getAreaSize());
-            pstmt.setString(3, entity.getNote());
-            pstmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setInt(5, entity.getAreaId());
+            pstmt.setString(2, entity.getDescription());
+            pstmt.setInt(3, entity.getAreaId());
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException | ClassNotFoundException e) {
@@ -160,18 +153,7 @@ public class AreaDAO implements IBaseDAO<Area> {
         Area area = new Area();
         area.setAreaId(rs.getInt("area_id"));
         area.setAreaName(rs.getString("area_name"));
-        area.setAreaSize(rs.getString("area_size"));
-        area.setNote(rs.getString("note"));
-
-        Timestamp createdAt = rs.getTimestamp("created_at");
-        if (createdAt != null) {
-            area.setCreatedAt();
-        }
-
-        Timestamp updatedAt = rs.getTimestamp("updated_at");
-        if (updatedAt != null) {
-            area.setUpdatedAt();
-        }
+        area.setDescription(rs.getString("description"));
 
         return area;
     }

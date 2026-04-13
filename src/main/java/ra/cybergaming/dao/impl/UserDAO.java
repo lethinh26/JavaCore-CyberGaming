@@ -328,4 +328,18 @@ public class UserDAO implements IBaseDAO<User> {
 
         return user;
     }
+
+    public boolean addMoney(int userId, int money) {
+        String sql = "UPDATE users SET balance = balance + ? WHERE user_id = ?";
+        try (Connection conn = DBConnector.openConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,money);
+            stmt.setInt(2,userId);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Lỗi: Không thể nạp tiền vào tài khoản - " + e.getMessage());
+            return false;
+        }
+    }
 }

@@ -75,11 +75,28 @@ public class WorkstationDAO implements IBaseDAO<Workstation> {
     @Override
     public List<Workstation> findAll() {
         List<Workstation> workstations = new ArrayList<>();
-        String sql = "SELECT * FROM workstations WHERE status = 'AVAILABLE'";
+        String sql = "SELECT * FROM workstations";
 
         try (Connection conn = DBConnector.openConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                workstations.add(mapResultSetToWorkstation(rs));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Lỗi: Không thể lấy danh sách máy trạm - " + e.getMessage());
+        }
+
+        return workstations;
+    }
+
+    public List<Workstation> findAllAvailable() {
+        List<Workstation> workstations = new ArrayList<>();
+        String sql = "SELECT * FROM workstations WHERE status = 'AVAILABLE'";
+        try (Connection conn = DBConnector.openConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 workstations.add(mapResultSetToWorkstation(rs));

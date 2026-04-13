@@ -35,12 +35,12 @@ public class StaffService {
             return;
         }
 
-        System.out.println("\n======================================================================");
-        System.out.println("|              DANH SÁCH BOOKING ĐANG CHỜ TIẾP NHẬN                |");
-        System.out.println("======================================================================");
+        System.out.println("\n===========================================================================================");
+        System.out.printf("| %-89s |%n", "DANH SÁCH BOOKING ĐANG CHỜ TIẾP NHẬN");
+        System.out.println("===========================================================================================");
         System.out.printf("| %-5s | %-15s | %-20s | %-15s | %-20s |%n", 
             "STT", "Mã đặt", "Khách hàng", "Máy", "Thời gian bắt đầu");
-        System.out.println("----------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -55,7 +55,7 @@ public class StaffService {
             System.out.printf("| %-5d | %-15s | %-20s | %-15s | %-20s |%n",
                 i + 1, booking.getBookingCode(), customerName, wsName, startTime);
         }
-        System.out.println("======================================================================\n");
+        System.out.println("===========================================================================================\n");
 
         int choice = InputHandler.inputInt("Chọn booking cần tiếp nhận (0 để hủy): ");
 
@@ -96,12 +96,12 @@ public class StaffService {
             return;
         }
 
-        System.out.println("\n======================================================================");
-        System.out.println("|            DANH SÁCH BOOKING ĐANG HOẠT ĐỘNG                       |");
-        System.out.println("======================================================================");
+        System.out.println("\n===========================================================================================");
+        System.out.printf("| %-89s |%n", "DANH SÁCH BOOKING ĐANG HOẠT ĐỘNG");
+        System.out.println("===========================================================================================");
         System.out.printf("| %-5s | %-15s | %-20s | %-15s | %-20s |%n", 
             "STT", "Mã đặt", "Khách hàng", "Máy", "Thời gian bắt đầu");
-        System.out.println("----------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -116,7 +116,7 @@ public class StaffService {
             System.out.printf("| %-5d | %-15s | %-20s | %-15s | %-20s |%n",
                 i + 1, booking.getBookingCode(), customerName, wsName, startTime);
         }
-        System.out.println("======================================================================\n");
+        System.out.println("===========================================================================================\n");
 
         int choice = InputHandler.inputInt("Chọn booking cần cập nhật trạng thái (0 để hủy): ");
 
@@ -180,12 +180,12 @@ public class StaffService {
             return;
         }
 
-        System.out.println("\n======================================================================");
-        System.out.println("|               DANH SÁCH ORDER ĐANG CHỜ TIẾP NHẬN                |");
-        System.out.println("======================================================================");
+        System.out.println("\n=================================================================================");
+        System.out.printf("| %-89s |%n", "DANH SÁCH ORDER ĐANG CHỜ TIẾP NHẬN");
+        System.out.println("=================================================================================");
         System.out.printf("| %-5s | %-15s | %-20s | %-15s | %-15s |%n", 
             "STT", "Mã order", "Khách hàng", "Tổng tiền", "Thời gian");
-        System.out.println("----------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -198,7 +198,7 @@ public class StaffService {
             System.out.printf("| %-5d | %-15s | %-20s | %-15.2f | %-15s |%n",
                 i + 1, order.getOrderCode(), customerName, order.getTotalAmount(), createdTime);
         }
-        System.out.println("======================================================================\n");
+        System.out.println("=================================================================================\n");
 
         int choice = InputHandler.inputInt("Chọn order cần tiếp nhận (0 để hủy): ");
 
@@ -250,12 +250,12 @@ public class StaffService {
             return;
         }
 
-        System.out.println("\n======================================================================");
-        System.out.println("|              DANH SÁCH ORDER ĐANG XÁC NHẬN                       |");
-        System.out.println("======================================================================");
+        System.out.println("\n=================================================================================");
+        System.out.printf("| %-89s |%n", "DANH SÁCH ORDER ĐANG XÁC NHẬN");
+        System.out.println("=================================================================================");
         System.out.printf("| %-5s | %-15s | %-20s | %-15s | %-15s |%n", 
             "STT", "Mã order", "Khách hàng", "Tổng tiền", "Thời gian");
-        System.out.println("----------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -268,7 +268,7 @@ public class StaffService {
             System.out.printf("| %-5d | %-15s | %-20s | %-15.2f | %-15s |%n",
                 i + 1, order.getOrderCode(), customerName, order.getTotalAmount(), createdTime);
         }
-        System.out.println("======================================================================\n");
+        System.out.println("=================================================================================\n");
 
         int choice = InputHandler.inputInt("Chọn order cần cập nhật trạng thái (0 để hủy): ");
 

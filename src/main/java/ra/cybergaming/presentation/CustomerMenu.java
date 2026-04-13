@@ -22,9 +22,10 @@ public class CustomerMenu {
             System.out.printf("| %-36s |\n", "MENU KHÁCH HÀNG");
             System.out.println("+======================================+");
             System.out.printf("| %-36s |\n", "1. Xem thông tin tài khoản");
-            System.out.printf("| %-36s |\n", "2. Đặt trước máy trạm");
-            System.out.printf("| %-36s |\n", "3. Đặt đồ ăn, thức uống");
-            System.out.printf("| %-36s |\n", "4. Xem lịch sử giao dịch");
+            System.out.printf("| %-36s |\n", "2. Nạp tiền");
+            System.out.printf("| %-36s |\n", "3. Đặt trước máy trạm");
+            System.out.printf("| %-36s |\n", "4. Đặt đồ ăn, thức uống");
+            System.out.printf("| %-36s |\n", "5. Xem lịch sử giao dịch");
             System.out.printf("| %-36s |\n", "0. Đăng xuất");
             System.out.println("+======================================+");
             System.out.print("Chọn: ");
@@ -37,12 +38,15 @@ public class CustomerMenu {
                         customerService.showInfo();
                         break;
                     case 2:
-                        workstationMenu();
+                        customerService.addMoney();
                         break;
                     case 3:
-                        serviceMenu();
+                        workstationMenu();
                         break;
                     case 4:
+                        serviceMenu();
+                        break;
+                    case 5:
                         customerService.viewTransactionHistory();
                         break;
                     case 0:
@@ -64,14 +68,14 @@ public class CustomerMenu {
 
         while (isRunning) {
             System.out.println("\n+======================================+");
-            System.out.printf("| %-38s |\n", "ĐẶT TRƯỚC MÁY TRẠM");
+            System.out.printf("| %-36s |\n", "ĐẶT TRƯỚC MÁY TRẠM");
             System.out.println("+======================================+");
-            System.out.printf("| %-38s |\n", "1. Đặt máy trạm");
-            System.out.printf("| %-38s |\n", "2. Hủy đặt máy trạm");
-            System.out.printf("| %-38s |\n", "3. Đóng máy trạm");
-            System.out.printf("| %-38s |\n", "4. Xem máy chưa thanh toán");
-            System.out.printf("| %-38s |\n", "5. Xem lịch sử đặt máy");
-            System.out.printf("| %-38s |\n", "0. Quay lại");
+            System.out.printf("| %-36s |\n", "1. Đặt máy trạm");
+            System.out.printf("| %-36s |\n", "2. Hủy đặt máy trạm");
+            System.out.printf("| %-36s |\n", "3. Đóng máy trạm");
+            System.out.printf("| %-36s |\n", "4. Xem máy chưa thanh toán");
+            System.out.printf("| %-36s |\n", "5. Xem lịch sử đặt máy");
+            System.out.printf("| %-36s |\n", "0. Quay lại");
             System.out.println("+======================================+");
             System.out.print("Chọn: ");
 
